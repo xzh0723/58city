@@ -106,38 +106,10 @@ def parse_list(url):
         else:
             url = item['src']
         res_1 = get_index(url)
-        if res_1.status_code == 200:
-            print('第一次重定向没有发生，Year!')
-            # print(res_1.text)
-            try:
-                parse_detail(res_1.text)
-            except:
-                print('被封IP了，休息5秒，换代理重新爬')
-                time.sleep(5)
-                res_1 = get_index(url, options={'proxies': get_random_proxy(PROXY_URL)})
-                try:
-                    parse_detail(res_1.text)
-                except:
-                    print('免费代理真垃圾，诶，歇会吧，小爬虫你辛苦了！')
-        else:
-            url_1 = res_1.headers['location']
-            print('第一次重定向, url：' + url_1)
-            try:
-                time.sleep(random.random())
-                res_2 = get_index(url_1)
-                if res_2.status_code == 200:
-                    print('第二次重定向没有发生')
-                    parse_detail(res_2.text)
-                else:
-                    real_url = res_2.headers['location']
-                    print('第二次重定向, url：' + real_url)
-                    time.sleep(random.random())
-                    res_3 = get_index(real_url)
-                    print(res_3.text)
-                    parse_detail(res_3.text)
-            except:
-                print('没招了，免费代理根本爬不了')
-                # return item
+        try:
+            parse_detail(res_1.text)
+        except:
+            print('爬取过于频繁，出现验证码')
 
 def parse_detail(html):
         db = mongodb()
@@ -190,4 +162,4 @@ if __name__ == '__main__':
         url = base_url.format(city=city, page=page)
         pool.submit(parse_list, url)
 
-    print('爬完啦， 总共花了：', time.time() - start)
+    print('耗时：', time.time() - start)
