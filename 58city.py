@@ -90,8 +90,8 @@ def parse_list(url):
         item['src'] = each_li.xpath('.//div[@class="des"]/h2/a/@href')[0]
         price = each_li.xpath('.//div[@class="money"]/b/text()')[0]
         item['price'] = get_real_word(price, html)
-        geju = each_li.xpath('.//div[@class="des"]/p/text()')[0]
-        item['room'] = get_real_word(geju, html)
+        type = each_li.xpath('.//div[@class="des"]/p/text()')[0]
+        item['type'] = get_real_word(type, html)
         item['address'] = '/'.join(each_li.xpath('.//p[@class="add"]/a/text()'))
         if each_li.xpath('.//span[@class="listjjr"]/text()'):
             jjr = each_li.xpath('.//span[@class="listjjr"]/text()')[0].strip()
